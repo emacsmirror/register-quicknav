@@ -82,7 +82,7 @@
     (sort result 'register-quicknav//sort-position-register-elements)))
 
 (defun register-quicknav/next-register ()
-  "Jump to next register."
+  "Jump to next position register."
   (interactive)
   (let ((pos register-quicknav//current-position-register)
         (registers (register-quicknav//registers)))
@@ -93,7 +93,7 @@
     (register-to-point (car (nth pos registers)))))
 
 (defun register-quicknav/prev-register ()
-  "Jump to previous register."
+  "Jump to previous position register."
   (interactive)
   (let ((pos register-quicknav//current-position-register)
         (registers (register-quicknav//registers)))
