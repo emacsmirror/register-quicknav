@@ -28,6 +28,7 @@
 ;; Features:
 ;;
 ;; * Cycle through all position registers in both directions.
+;; * Clear current register.
 
 ;; Known limitations:
 ;;
@@ -37,19 +38,21 @@
 ;; Installation:
 ;;
 ;; To use `register-quicknav.el', put it in your load-path and add the following
-;; to your .emacs
+;; to your .emacs:
 ;;
 ;; (require 'register-quicknav)
 ;; (global-set-key (kbd "<C-f5>") 'register-quicknav/prev-register)
 ;; (global-set-key (kbd "<C-f6>") 'register-quicknav/next-register)
+;; (global-set-key (kbd "M-r")    'register-quicknav/clear-current-register)
 ;;
 ;; Or, with use-package:
 ;;
 ;; (use-package register-quicknav
-;;   :commands (register-quicknav/prev-register register-quicknav/next-register)
-;;   :bind
-;;   ("C-<f5>" . register-quicknav/prev-register)
-;;   ("C-<f6>" . register-quicknav/next-register))
+;;   :commands (register-quicknav/prev-register
+;;              register-quicknav/next-register)
+;;   :bind (("C-<f5>" . register-quicknav/prev-register)
+;;          ("C-<f6>" . register-quicknav/next-register)
+;;          ("M-r"    . register-quicknav/clear-current-register)))
 
 ;;; Code:
 
@@ -94,6 +97,14 @@
       (setq pos (- (length registers) 1)))
     (setq register-quicknav//current-position-register pos)
     (register-to-point (car (nth pos registers)))))
+
+(defun register-quicknav/clear-current-register ()
+  "Clear currently selected position register."
+  (interactive)
+  (let ((pos register-quicknav//current-position-register)
+        (registers (register-quicknav//registers)))
+    (setq register-alist (delete (nth pos registers) register-alist))
+    ))
 
 
 (provide 'register-quicknav)
