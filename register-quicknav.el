@@ -99,7 +99,11 @@
     (register-to-point (car (nth pos registers)))))
 
 (defun register-quicknav/clear-current-register ()
-  "Clear currently selected position register."
+  "Clear currently selected position register.
+To be more precise, it deletes the
+`register-quicknav//current-position-register'th position
+register, as reported by `register-quicknav//registers', from
+`register-alist'."
   (interactive)
   (let ((pos register-quicknav//current-position-register)
         (registers (register-quicknav//registers)))
