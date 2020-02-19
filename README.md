@@ -2,6 +2,7 @@
 
 *Author:* tastytea <tastytea@tastytea.de><br>
 *Version:* 0.1.0<br>
+*URL:* [https://schlomp.space/tastytea/register-quicknav](https://schlomp.space/tastytea/register-quicknav)<br>
 
 This package is built on top of `register.el` and allows you to quickly jump
 to the next/previous position register.  If you reach the end, the search
