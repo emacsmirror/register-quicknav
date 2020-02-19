@@ -76,32 +76,24 @@
 (defun register-quicknav/next-register ()
   "Jump to next register."
   (interactive)
-  (setq register-quicknav//current-position-register
-        (+ register-quicknav//current-position-register 1))
-  (when (>= register-quicknav//current-position-register
-            (length (register-quicknav//registers)))
-    (setq register-quicknav//current-position-register 0))
-  (let (register-element register-name)
-    (setq register-element
-          (car (nthcdr register-quicknav//current-position-register
-                       (register-quicknav//registers))))
-    (setq register-name (car register-element))
-    (register-to-point register-name)))
+  (let ((pos register-quicknav//current-position-register)
+        (registers (register-quicknav//registers)))
+    (setq pos (+ pos 1))
+    (when (>= pos (length registers))
+      (setq pos 0))
+    (setq register-quicknav//current-position-register pos)
+    (register-to-point (car (nth pos registers)))))
 
 (defun register-quicknav/prev-register ()
   "Jump to previous register."
   (interactive)
-  (setq register-quicknav//current-position-register
-        (- register-quicknav//current-position-register 1))
-  (when (< register-quicknav//current-position-register 0)
-    (setq register-quicknav//current-position-register
-          (- (length (register-quicknav//registers)) 1)))
-  (let (register-element register-name)
-    (setq register-element
-          (car (nthcdr register-quicknav//current-position-register
-                       (register-quicknav//registers))))
-    (setq register-name (car register-element))
-    (register-to-point register-name)))
+  (let ((pos register-quicknav//current-position-register)
+        (registers (register-quicknav//registers)))
+    (setq pos (- pos 1))
+    (when (< pos 0)
+      (setq pos (- (length registers) 1)))
+    (setq register-quicknav//current-position-register pos)
+    (register-to-point (car (nth pos registers)))))
 
 
 (provide 'register-quicknav)
