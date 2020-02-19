@@ -3,9 +3,9 @@
 *Author:* tastytea <tastytea@tastytea.de><br>
 *Version:* 0.1.0<br>
 
-This package is built on top of register.el and allows you to quickly jump to
-the next/previous position register.  If you reach the end, the search wraps
-around and continues with the first (or last) register.
+This package is built on top of `register.el` and allows you to quickly jump
+to the next/previous position register.  If you reach the end, the search
+wraps around and continues with the first (or last) register.
 
 ## Features
 
