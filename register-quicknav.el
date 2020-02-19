@@ -49,8 +49,6 @@
 ;; Or, with use-package:
 ;;
 ;; (use-package register-quicknav
-;;   :commands (register-quicknav/prev-register
-;;              register-quicknav/next-register)
 ;;   :bind (("C-<f5>" . register-quicknav/prev-register)
 ;;          ("C-<f6>" . register-quicknav/next-register)
 ;;          ("M-r"    . register-quicknav/clear-current-register)))
