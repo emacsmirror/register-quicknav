@@ -20,7 +20,7 @@ you close and reopen it, it won't work anymore.
 ## Installation
 
 To use `register-quicknav.el`, put it in your load-path and add the following
-to your .emacs:
+to your init.el:
 
     (require 'register-quicknav)
     (global-set-key (kbd "<C-f5>") 'register-quicknav/prev-register)
