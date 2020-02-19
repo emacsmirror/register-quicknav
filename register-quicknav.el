@@ -54,6 +54,12 @@
 ;;          ("C-<f6>" . register-quicknav/next-register)
 ;;          ("M-r"    . register-quicknav/clear-current-register)))
 
+;; Tips:
+;;
+;; To only cycle through the registers of the current buffer, add
+;;     (make-variable-buffer-local 'register-alist)
+;; to your init.el.
+
 ;;; Code:
 
 (defvar register-quicknav//current-position-register 0
