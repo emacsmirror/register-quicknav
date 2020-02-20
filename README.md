@@ -24,9 +24,9 @@ To use `register-quicknav.el`, put it in your load-path and add the following
 to your init.el:
 
     (require 'register-quicknav)
-    (global-set-key (kbd "<C-f5>") 'register-quicknav/prev-register)
-    (global-set-key (kbd "<C-f6>") 'register-quicknav/next-register)
-    (global-set-key (kbd "M-r")    'register-quicknav/clear-current-register)
+    (global-set-key (kbd "<C-f5>") #'register-quicknav/prev-register)
+    (global-set-key (kbd "<C-f6>") #'register-quicknav/next-register)
+    (global-set-key (kbd "M-r")    #'register-quicknav/clear-current-register)
 
 Or, with use-package:
 

@@ -43,9 +43,9 @@
 ;; to your init.el:
 ;;
 ;; (require 'register-quicknav)
-;; (global-set-key (kbd "<C-f5>") 'register-quicknav/prev-register)
-;; (global-set-key (kbd "<C-f6>") 'register-quicknav/next-register)
-;; (global-set-key (kbd "M-r")    'register-quicknav/clear-current-register)
+;; (global-set-key (kbd "<C-f5>") #'register-quicknav/prev-register)
+;; (global-set-key (kbd "<C-f6>") #'register-quicknav/next-register)
+;; (global-set-key (kbd "M-r")    #'register-quicknav/clear-current-register)
 ;;
 ;; Or, with use-package:
 ;;
@@ -80,7 +80,7 @@
     (dolist (item register-alist)
       (when (markerp (cdr item))
         (setq result (cons item result))))
-    (sort result 'register-quicknav//sort-position-register-elements)))
+    (sort result #'register-quicknav//sort-position-register-elements)))
 
 (defun register-quicknav/next-register ()
   "Jump to next position register."
