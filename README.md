@@ -35,11 +35,10 @@ Or, with use-package:
              ("C-<f6>" . register-quicknav/next-register)
              ("M-r"    . register-quicknav/clear-current-register)))
 
-## Tips
+## Variables
 
-To only cycle through the registers of the current buffer, add
-    (make-variable-buffer-local 'register-alist)
-to your init.el.
+* `register-quicknav/buffer-only`: Cycle only through position registers in
+  current buffer.
 
 
 ---

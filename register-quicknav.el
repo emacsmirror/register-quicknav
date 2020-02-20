@@ -54,13 +54,21 @@
 ;;          ("C-<f6>" . register-quicknav/next-register)
 ;;          ("M-r"    . register-quicknav/clear-current-register)))
 
-;; Tips:
+;; Variables:
 ;;
-;; To only cycle through the registers of the current buffer, add
-;;     (make-variable-buffer-local 'register-alist)
-;; to your init.el.
+;; * `register-quicknav/buffer-only': Cycle only through position registers in
+;;   current buffer.
 
 ;;; Code:
+
+(defgroup register-quicknav nil
+  "Variables for register-quicknav."
+  :group 'editing)
+
+(defcustom register-quicknav/buffer-only nil
+  "Cycle only through position registers in current buffer."
+  :type 'boolean
+  :group 'register-quicknav)
 
 (defvar register-quicknav//current-position-register 0
   "An index to the current position register.")
@@ -79,7 +87,10 @@
   (let (result)
     (dolist (item register-alist)
       (when (markerp (cdr item))
-        (setq result (cons item result))))
+        (if register-quicknav/buffer-only
+            (when (eq (current-buffer) (marker-buffer (cdr item)))
+              (setq result (cons item result)))
+          (setq result (cons item result)))))
     (sort result #'register-quicknav//sort-position-register-elements)))
 
 (defun register-quicknav/next-register ()
