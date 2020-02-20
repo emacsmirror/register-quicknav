@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020  tastytea
 
 ;; Author: tastytea <tastytea@tastytea.de>
-;; Keywords: register
+;; Keywords: convenience
 ;; Version: 0.1.0
 ;; URL: https://schlomp.space/tastytea/register-quicknav
 
