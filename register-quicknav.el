@@ -112,8 +112,7 @@ register, as reported by `register-quicknav//registers', from
   (interactive)
   (let ((pos register-quicknav//current-position-register)
         (registers (register-quicknav//registers)))
-    (setq register-alist (delete (nth pos registers) register-alist))
-    ))
+    (setq register-alist (delete (nth pos registers) register-alist))))
 
 
 (provide 'register-quicknav)
