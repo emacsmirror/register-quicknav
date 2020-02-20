@@ -1,4 +1,4 @@
-;;; register-quicknav.el --- Quickly jump to next/previous register.  -*- lexical-binding: t; -*-
+;;; register-quicknav.el --- Quickly jump to next/previous register -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2020  tastytea
 
