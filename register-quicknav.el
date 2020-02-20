@@ -83,7 +83,9 @@
             (marker-position marker-b)))))
 
 (defun register-quicknav//registers ()
-  "Return all position registers, sorted by file name and position."
+  "Return all position registers, sorted by file name and position.
+If `register-quicknav/buffer-only' is t, return only registers in
+current buffer."
   (let (result)
     (dolist (item register-alist)
       (when (markerp (cdr item))
