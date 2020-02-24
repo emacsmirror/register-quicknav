@@ -35,6 +35,13 @@ Or, with use-package:
              ("C-<f6>" . register-quicknav/next-register)
              ("M-r"    . register-quicknav/clear-current-register)))
 
+Instead of manually copying `register-quicknav.el` into your load-path, you
+can use [quelpa](https://github.com/quelpa/quelpa):
+
+    (quelpa '(register-quicknav
+              :fetcher git
+              :url "https://schlomp.space/tastytea/register-quicknav.git"))
+
 ## Variables
 
 * `register-quicknav/buffer-only`: Cycle only through position registers in
