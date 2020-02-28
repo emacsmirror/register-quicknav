@@ -102,6 +102,7 @@ current buffer."
           (setq result (cons item result)))))
     (sort result #'register-quicknav//sort-position-register-elements)))
 
+;;;###autoload
 (defun register-quicknav/next-register ()
   "Jump to next position register."
   (interactive)
@@ -113,6 +114,7 @@ current buffer."
     (setq register-quicknav//current-position-register pos)
     (register-to-point (car (nth pos registers)))))
 
+;;;###autoload
 (defun register-quicknav/prev-register ()
   "Jump to previous position register."
   (interactive)
@@ -124,6 +126,7 @@ current buffer."
     (setq register-quicknav//current-position-register pos)
     (register-to-point (car (nth pos registers)))))
 
+;;;###autoload
 (defun register-quicknav/clear-current-register ()
   "Clear currently selected position register.
 To be more precise, it deletes the
