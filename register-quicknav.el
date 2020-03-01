@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020  tastytea
 
 ;; Author: tastytea <tastytea@tastytea.de>
-;; Version: 0.1.0
+;; Version: 0.1.1
 ;; Package-Requires: ((emacs "24"))
 ;; Keywords: convenience
 ;; URL: https://schlomp.space/tastytea/register-quicknav
@@ -39,20 +39,24 @@
 
 ;; Installation:
 ;;
+;; **Note:** The function and variable names were previously separated by “/”
+;; from the namespace.  To conform with MELPA rules the separator has been
+;; changed to “-”.
+;;
 ;; To use `register-quicknav.el', put it in your load-path and add the following
 ;; to your init.el:
 ;;
 ;; (require 'register-quicknav)
-;; (global-set-key (kbd "<C-f5>") #'register-quicknav/prev-register)
-;; (global-set-key (kbd "<C-f6>") #'register-quicknav/next-register)
-;; (global-set-key (kbd "M-r")    #'register-quicknav/clear-current-register)
+;; (global-set-key (kbd "<C-f5>") #'register-quicknav-prev-register)
+;; (global-set-key (kbd "<C-f6>") #'register-quicknav-next-register)
+;; (global-set-key (kbd "M-r")    #'register-quicknav-clear-current-register)
 ;;
 ;; Or, with use-package:
 ;;
 ;; (use-package register-quicknav
-;;   :bind (("C-<f5>" . register-quicknav/prev-register)
-;;          ("C-<f6>" . register-quicknav/next-register)
-;;          ("M-r"    . register-quicknav/clear-current-register)))
+;;   :bind (("C-<f5>" . register-quicknav-prev-register)
+;;          ("C-<f6>" . register-quicknav-next-register)
+;;          ("M-r"    . register-quicknav-clear-current-register)))
 ;;
 ;; Instead of manually copying `register-quicknav.el' into your load-path, you
 ;; can use [quelpa](https://github.com/quelpa/quelpa):
@@ -63,24 +67,33 @@
 
 ;; Variables:
 ;;
-;; * `register-quicknav/buffer-only': Cycle only through position registers in
+;; * `register-quicknav-buffer-only': Cycle only through position registers in
 ;;   current buffer.
 
 ;;; Code:
+
+(define-obsolete-variable-alias 'register-quicknav/buffer-only
+  'register-quicknav-buffer-only "0.1.1")
+(define-obsolete-function-alias #'register-quicknav/next-register
+  #'register-quicknav-next-register "0.1.1")
+(define-obsolete-function-alias #'register-quicknav/prev-register
+  #'register-quicknav-prev-register "0.1.1")
+(define-obsolete-function-alias #'register-quicknav/clear-current-register
+  #'register-quicknav-clear-current-register "0.1.1")
 
 (defgroup register-quicknav nil
   "Variables for register-quicknav."
   :group 'editing)
 
-(defcustom register-quicknav/buffer-only nil
+(defcustom register-quicknav-buffer-only nil
   "Cycle only through position registers in current buffer."
   :type 'boolean
   :group 'register-quicknav)
 
-(defvar register-quicknav//current-position-register 0
+(defvar register-quicknav--current-position-register 0
   "An index to the current position register.")
 
-(defun register-quicknav//sort-position-register-elements (a b)
+(defun register-quicknav--sort-position-register-elements (a b)
   "Return t if the file name is the same and A < B."
   (let ((marker-a (cdr a))
         (marker-b (cdr b)))
@@ -89,55 +102,54 @@
          (< (marker-position marker-a)
             (marker-position marker-b)))))
 
-(defun register-quicknav//registers ()
+(defun register-quicknav--registers ()
   "Return all position registers, sorted by file name and position.
-If `register-quicknav/buffer-only' is t, return only registers in
+If `register-quicknav-buffer-only' is t, return only registers in
 current buffer."
   (let (result)
     (dolist (item register-alist)
       (when (markerp (cdr item))
-        (if register-quicknav/buffer-only
+        (if register-quicknav-buffer-only
             (when (eq (current-buffer) (marker-buffer (cdr item)))
               (setq result (cons item result)))
           (setq result (cons item result)))))
-    (sort result #'register-quicknav//sort-position-register-elements)))
+    (sort result #'register-quicknav--sort-position-register-elements)))
 
 ;;;###autoload
-(defun register-quicknav/next-register ()
+(defun register-quicknav-next-register ()
   "Jump to next position register."
   (interactive)
-  (let ((pos register-quicknav//current-position-register)
-        (registers (register-quicknav//registers)))
+  (let ((pos register-quicknav--current-position-register)
+        (registers (register-quicknav--registers)))
     (setq pos (+ pos 1))
     (when (>= pos (length registers))
       (setq pos 0))
-    (setq register-quicknav//current-position-register pos)
+    (setq register-quicknav--current-position-register pos)
     (register-to-point (car (nth pos registers)))))
 
 ;;;###autoload
-(defun register-quicknav/prev-register ()
+(defun register-quicknav-prev-register ()
   "Jump to previous position register."
   (interactive)
-  (let ((pos register-quicknav//current-position-register)
-        (registers (register-quicknav//registers)))
+  (let ((pos register-quicknav--current-position-register)
+        (registers (register-quicknav--registers)))
     (setq pos (- pos 1))
     (when (< pos 0)
       (setq pos (- (length registers) 1)))
-    (setq register-quicknav//current-position-register pos)
+    (setq register-quicknav--current-position-register pos)
     (register-to-point (car (nth pos registers)))))
 
 ;;;###autoload
-(defun register-quicknav/clear-current-register ()
+(defun register-quicknav-clear-current-register ()
   "Clear currently selected position register.
 To be more precise, it deletes the
-`register-quicknav//current-position-register'th position
-register, as reported by `register-quicknav//registers', from
+`register-quicknav--current-position-register'th position
+register, as reported by `register-quicknav--registers', from
 `register-alist'."
   (interactive)
-  (let ((pos register-quicknav//current-position-register)
-        (registers (register-quicknav//registers)))
+  (let ((pos register-quicknav--current-position-register)
+        (registers (register-quicknav--registers)))
     (setq register-alist (delq (nth pos registers) register-alist))))
-
 
 (provide 'register-quicknav)
 ;;; register-quicknav.el ends here

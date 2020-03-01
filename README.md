@@ -1,7 +1,7 @@
 # register-quicknav - Quickly jump to next/previous register
 
 *Author:* tastytea <tastytea@tastytea.de><br>
-*Version:* 0.1.0<br>
+*Version:* 0.1.1<br>
 *URL:* [https://schlomp.space/tastytea/register-quicknav](https://schlomp.space/tastytea/register-quicknav)<br>
 
 This package is built on top of `register.el` and allows you to quickly jump
@@ -20,20 +20,24 @@ you close and reopen it, it won't work anymore.
 
 ## Installation
 
+**Note:** The function and variable names were previously separated by “/”
+from the namespace.  To conform with MELPA rules the separator has been
+changed to “-”.
+
 To use `register-quicknav.el`, put it in your load-path and add the following
 to your init.el:
 
     (require 'register-quicknav)
-    (global-set-key (kbd "<C-f5>") #'register-quicknav/prev-register)
-    (global-set-key (kbd "<C-f6>") #'register-quicknav/next-register)
-    (global-set-key (kbd "M-r")    #'register-quicknav/clear-current-register)
+    (global-set-key (kbd "<C-f5>") #'register-quicknav-prev-register)
+    (global-set-key (kbd "<C-f6>") #'register-quicknav-next-register)
+    (global-set-key (kbd "M-r")    #'register-quicknav-clear-current-register)
 
 Or, with use-package:
 
     (use-package register-quicknav
-      :bind (("C-<f5>" . register-quicknav/prev-register)
-             ("C-<f6>" . register-quicknav/next-register)
-             ("M-r"    . register-quicknav/clear-current-register)))
+      :bind (("C-<f5>" . register-quicknav-prev-register)
+             ("C-<f6>" . register-quicknav-next-register)
+             ("M-r"    . register-quicknav-clear-current-register)))
 
 Instead of manually copying `register-quicknav.el` into your load-path, you
 can use [quelpa](https://github.com/quelpa/quelpa):
@@ -44,7 +48,7 @@ can use [quelpa](https://github.com/quelpa/quelpa):
 
 ## Variables
 
-* `register-quicknav/buffer-only`: Cycle only through position registers in
+* `register-quicknav-buffer-only`: Cycle only through position registers in
   current buffer.
 
 
