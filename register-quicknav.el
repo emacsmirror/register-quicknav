@@ -99,21 +99,22 @@
   "Return all position registers, sorted by file name and position.
 If `register-quicknav-buffer-only' is t, return only registers in
 current buffer."
-  (let ((sort-fn (lambda (a b)
-                   (let ((marker-a (cdr a))
-                         (marker-b (cdr b)))
-                     (and (string= (buffer-file-name (marker-buffer marker-a))
-                                   (buffer-file-name (marker-buffer marker-b)))
-                          (< (marker-position marker-a)
-                             (marker-position marker-b))))))
-        (result))
-    (dolist (item register-alist)
-      (when (markerp (cdr item))
-        (if register-quicknav-buffer-only
-            (when (eq (current-buffer) (marker-buffer (cdr item)))
-              (push item result))
-          (push item result))))
-    (sort result sort-fn)))
+  (cl-flet ((sort-registers
+             (lambda (a b)
+               (let ((marker-a (cdr a))
+                     (marker-b (cdr b)))
+                 (and (string= (buffer-file-name (marker-buffer marker-a))
+                               (buffer-file-name (marker-buffer marker-b)))
+                      (< (marker-position marker-a)
+                         (marker-position marker-b)))))))
+    (let ((result))
+      (dolist (item register-alist)
+        (when (markerp (cdr item))
+          (if register-quicknav-buffer-only
+              (when (eq (current-buffer) (marker-buffer (cdr item)))
+                (push item result))
+            (push item result))))
+      (sort result #'sort-registers))))
 
 ;;;###autoload
 (defun register-quicknav-next-register ()
