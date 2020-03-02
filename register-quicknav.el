@@ -109,8 +109,8 @@ current buffer."
       (when (markerp (cdr item))
         (if register-quicknav-buffer-only
             (when (eq (current-buffer) (marker-buffer (cdr item)))
-              (setq result (cons item result)))
-          (setq result (cons item result)))))
+              (push item result))
+          (push item result))))
     (sort result sort-fn)))
 
 ;;;###autoload
