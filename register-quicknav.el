@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020  tastytea
 
 ;; Author: tastytea <tastytea@tastytea.de>
-;; Version: 0.1.1
+;; Version: 0.1.2
 ;; Package-Requires: ((emacs "24"))
 ;; Keywords: convenience
 ;; URL: https://schlomp.space/tastytea/register-quicknav
@@ -74,11 +74,11 @@
 
 (define-obsolete-variable-alias 'register-quicknav/buffer-only
   'register-quicknav-buffer-only "0.1.1")
-(define-obsolete-function-alias #'register-quicknav/next-register
+(define-obsolete-function-alias 'register-quicknav/next-register
   #'register-quicknav-next-register "0.1.1")
-(define-obsolete-function-alias #'register-quicknav/prev-register
+(define-obsolete-function-alias 'register-quicknav/prev-register
   #'register-quicknav-prev-register "0.1.1")
-(define-obsolete-function-alias #'register-quicknav/clear-current-register
+(define-obsolete-function-alias 'register-quicknav/clear-current-register
   #'register-quicknav-clear-current-register "0.1.1")
 
 (defgroup register-quicknav nil
