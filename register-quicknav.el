@@ -93,27 +93,25 @@
 (defvar register-quicknav--current-position-register 0
   "An index to the current position register.")
 
-(defun register-quicknav--sort-position-register-elements (a b)
-  "Return t if the file name is the same and A < B."
-  (let ((marker-a (cdr a))
-        (marker-b (cdr b)))
-    (and (string= (buffer-file-name (marker-buffer marker-a))
-                  (buffer-file-name (marker-buffer marker-b)))
-         (< (marker-position marker-a)
-            (marker-position marker-b)))))
-
 (defun register-quicknav--registers ()
   "Return all position registers, sorted by file name and position.
 If `register-quicknav-buffer-only' is t, return only registers in
 current buffer."
-  (let (result)
+  (let ((sort-fn (lambda (a b)
+                   (let ((marker-a (cdr a))
+                         (marker-b (cdr b)))
+                     (and (string= (buffer-file-name (marker-buffer marker-a))
+                                   (buffer-file-name (marker-buffer marker-b)))
+                          (< (marker-position marker-a)
+                             (marker-position marker-b))))))
+        (result))
     (dolist (item register-alist)
       (when (markerp (cdr item))
         (if register-quicknav-buffer-only
             (when (eq (current-buffer) (marker-buffer (cdr item)))
               (setq result (cons item result)))
           (setq result (cons item result)))))
-    (sort result #'register-quicknav--sort-position-register-elements)))
+    (sort result sort-fn)))
 
 ;;;###autoload
 (defun register-quicknav-next-register ()
