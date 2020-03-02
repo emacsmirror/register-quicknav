@@ -4,7 +4,7 @@
 
 ;; Author: tastytea <tastytea@tastytea.de>
 ;; Version: 0.1.2
-;; Package-Requires: ((emacs "24"))
+;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience
 ;; URL: https://schlomp.space/tastytea/register-quicknav
 
@@ -72,6 +72,8 @@
 
 ;;; Code:
 
+(require 'cl-lib)
+
 (define-obsolete-variable-alias 'register-quicknav/buffer-only
   'register-quicknav-buffer-only "0.1.1")
 (define-obsolete-function-alias 'register-quicknav/next-register
@@ -119,7 +121,7 @@ current buffer."
   (interactive)
   (let ((pos register-quicknav--current-position-register)
         (registers (register-quicknav--registers)))
-    (setq pos (+ pos 1))
+    (cl-incf pos)
     (when (>= pos (length registers))
       (setq pos 0))
     (setq register-quicknav--current-position-register pos)
@@ -131,7 +133,7 @@ current buffer."
   (interactive)
   (let ((pos register-quicknav--current-position-register)
         (registers (register-quicknav--registers)))
-    (setq pos (- pos 1))
+    (cl-decf pos)
     (when (< pos 0)
       (setq pos (- (length registers) 1)))
     (setq register-quicknav--current-position-register pos)
