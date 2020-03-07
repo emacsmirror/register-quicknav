@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020  tastytea
 
 ;; Author: tastytea <tastytea@tastytea.de>
-;; Version: 0.1.2
+;; Version: 0.2.0
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience
 ;; URL: https://schlomp.space/tastytea/register-quicknav
@@ -31,11 +31,6 @@
 ;;
 ;; * Cycle through all position registers in both directions.
 ;; * Clear current register.
-
-;; Known limitations:
-;;
-;; Works only for as long as the buffer containing the registers is open.  If
-;; you close and reopen it, it won't work anymore.
 
 ;; Installation:
 ;;
@@ -99,21 +94,44 @@
   "Return all position registers, sorted by file name and position.
 If `register-quicknav-buffer-only' is t, return only registers in
 current buffer."
-  (cl-flet ((sort-registers
-             (lambda (a b)
-               (let ((marker-a (cdr a))
-                     (marker-b (cdr b)))
-                 (and (string= (buffer-file-name (marker-buffer marker-a))
-                               (buffer-file-name (marker-buffer marker-b)))
-                      (< (marker-position marker-a)
-                         (marker-position marker-b)))))))
+  (cl-flet* ((item-file-name
+              (lambda (item)
+                "Return file-name of ITEM.
+Works on markers and file-queries."
+                (if (markerp (cdr item))
+                    (buffer-file-name (marker-buffer (cdr item)))
+                  (nth 2 item))))
+             (is-current-buffer?
+              (lambda (item)
+                "Return t if ITEM is in current buffer.
+Works on markers and file-queries."
+                (if (markerp (cdr item))
+                    (eq (current-buffer) (marker-buffer (cdr item)))
+                  (string= (buffer-file-name (current-buffer))
+                           (item-file-name item)))))
+             (sort-registers
+              (lambda (a b)
+                "Return t if position of A is < B.
+Works on markers and file-queries."
+                (cl-flet ((item-position
+                           (lambda (item)
+                             "Return position of ITEM.
+Works on markers and file-queries."
+                             (if (markerp (cdr item))
+                                 (marker-position (cdr item))
+                               (nth 3 item)))))
+                  (and (string= (item-file-name a)
+                                (item-file-name b))
+                       (< (item-position a)
+                          (item-position b)))))))
     (let ((result))
       (dolist (item register-alist)
-        (when (markerp (cdr item))
-          (if register-quicknav-buffer-only
-              (when (eq (current-buffer) (marker-buffer (cdr item)))
-                (push item result))
-            (push item result))))
+        (if (or (markerp (cdr item))
+                (eq (nth 1 item) 'file-query))
+            (if register-quicknav-buffer-only
+                (when (is-current-buffer? item)
+                  (push item result))
+              (push item result))))
       (sort result #'sort-registers))))
 
 ;;;###autoload

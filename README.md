@@ -1,7 +1,7 @@
 # register-quicknav - Quickly jump to next/previous register
 
 *Author:* tastytea <tastytea@tastytea.de><br>
-*Version:* 0.1.2<br>
+*Version:* 0.2.0<br>
 *URL:* [https://schlomp.space/tastytea/register-quicknav](https://schlomp.space/tastytea/register-quicknav)<br>
 
 This package is built on top of `register.el` and allows you to quickly jump
@@ -12,11 +12,6 @@ wraps around and continues with the first (or last) register.
 
 * Cycle through all position registers in both directions.
 * Clear current register.
-
-## Known limitations
-
-Works only for as long as the buffer containing the registers is open.  If
-you close and reopen it, it won't work anymore.
 
 ## Installation
 
