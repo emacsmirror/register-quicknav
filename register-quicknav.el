@@ -178,7 +178,7 @@ Works on markers and file-queries."
               (setq index (- (length register-list) 1))))
           (register-to-point (car (nth index register-list)))
           (register-quicknav--last-register (nth index register-list)))
-      ;; No suitable register found, jump to first or last register.
+      ;; No suitable register found, jump to first register.
       (register-to-point (car (car register-list)))
       (register-quicknav--last-register (car register-list)))))
 
