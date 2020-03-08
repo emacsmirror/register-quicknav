@@ -83,10 +83,12 @@
   "Variables for register-quicknav."
   :group 'editing)
 
+;;;###autoload
 (defcustom register-quicknav-buffer-only nil
   "Cycle only through position registers in current buffer."
   :type 'boolean
-  :group 'register-quicknav)
+  :group 'register-quicknav
+  :safe #'booleanp)
 
 (defvar-local register-quicknav--last-register-v nil
   "The last jumped-to position register.")
