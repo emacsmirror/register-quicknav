@@ -25,7 +25,8 @@
 
 ;; This package is built on top of `register.el' and allows you to quickly jump
 ;; to the next/previous position register.  If you reach the end, the search
-;; wraps around and continues with the first (or last) register.
+;; wraps around and continues with the first (or last) register.  It can be used
+;; across all files or individually for each buffer.
 
 ;; Features:
 ;;
