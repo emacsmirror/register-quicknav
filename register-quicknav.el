@@ -167,8 +167,7 @@ Works on markers and file-queries."
             (when (< register-pos (point))
               (setq index (cl-position register register-list)))))))
 
-    ;; If an index was found, set it to the next/previous register.  If not, set
-    ;; it to the first/last.
+    ;; Check if index is valid, correct it if not, jump to register with index.
     (if index
         (progn
           (when (or (> index (- (length register-list) 1)) (< index 0))
