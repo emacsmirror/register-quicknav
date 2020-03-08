@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020  tastytea
 
 ;; Author: tastytea <tastytea@tastytea.de>
-;; Version: 0.3.0
+;; Version: 0.3.1
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience
 ;; URL: https://schlomp.space/tastytea/register-quicknav
@@ -155,30 +155,27 @@ Works on markers and file-queries."
       (if next
           (cl-incf index)
         (cl-decf index)))
-
     ;; Try to find the position register closest to point.
     (dolist (register register-list)
       (when (register-quicknav--is-current-buffer? register)
         (let ((register-pos (register-quicknav--position register)))
           (if next
-              (when (and (not stop-searching) (> register-pos (point)))
+              (when (and (not stop-searching)
+                         (> register-pos (point)))
                 (setq index (cl-position register register-list)
                       stop-searching t))
             (when (< register-pos (point))
               (setq index (cl-position register register-list)))))))
-
-    ;; Check if index is valid, correct it if not, jump to register with index.
     (if index
-        (progn
-          (when (or (> index (- (length register-list) 1)) (< index 0))
-            (setq index nil))
-          (if next
-              (when (or (eq index nil) (eq index (length register-list)))
-                (setq index 0))
-            (when (eq index nil)
+        (progn          ; If index is invalid, set it to first or last register.
+          (when (or (>= index (length register-list))
+                    (< index 0))
+            (if next
+                (setq index 0)
               (setq index (- (length register-list) 1))))
           (register-to-point (car (nth index register-list)))
           (register-quicknav--last-register (nth index register-list)))
+      ;; No suitable register found, jump to first or last register.
       (register-to-point (car (car register-list)))
       (register-quicknav--last-register (car register-list)))))
 
