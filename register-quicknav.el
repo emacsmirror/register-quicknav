@@ -102,27 +102,27 @@ the global value otherwise."
         register-quicknav--last-register-v
       (default-value 'register-quicknav--last-register-v))))
 
-(defun register-quicknav--item-file-name (item)
-  "Return file-name of ITEM.
+(defun register-quicknav--register-file-name (register)
+  "Return file-name of REGISTER.
 Works on markers and file-queries."
-  (if (markerp (cdr item))
-      (buffer-file-name (marker-buffer (cdr item)))
-    (nth 2 item)))
+  (if (markerp (cdr register))
+      (buffer-file-name (marker-buffer (cdr register)))
+    (nth 2 register)))
 
-(defun register-quicknav--is-current-buffer? (item)
-  "Return t if ITEM is in current buffer.
+(defun register-quicknav--is-current-buffer? (register)
+  "Return t if REGISTER is in current buffer.
 Works on markers and file-queries."
-  (if (markerp (cdr item))
-      (eq (current-buffer) (marker-buffer (cdr item)))
+  (if (markerp (cdr register))
+      (eq (current-buffer) (marker-buffer (cdr register)))
     (string= (buffer-file-name (current-buffer))
-             (register-quicknav--item-file-name item))))
+             (register-quicknav--register-file-name register))))
 
-(defun register-quicknav--item-position (item)
-  "Return position of ITEM.
+(defun register-quicknav--position (register)
+  "Return position of REGISTER.
 Works on markers and file-queries."
-  (if (markerp (cdr item))
-      (marker-position (cdr item))
-    (nth 3 item)))
+  (if (markerp (cdr register))
+      (marker-position (cdr register))
+    (nth 3 register)))
 
 (defun register-quicknav--registers ()
   "Return all position registers, sorted by file name and position.
@@ -132,24 +132,24 @@ current buffer."
              (lambda (a b)
                "Return t if position of A is < B.
 Works on markers and file-queries."
-               (and (string= (register-quicknav--item-file-name a)
-                             (register-quicknav--item-file-name b))
-                    (< (register-quicknav--item-position a)
-                       (register-quicknav--item-position b))))))
+               (and (string= (register-quicknav--register-file-name a)
+                             (register-quicknav--register-file-name b))
+                    (< (register-quicknav--position a)
+                       (register-quicknav--position b))))))
     (let ((result))
-      (dolist (item register-alist)
-        (if (or (markerp (cdr item))
-                (eq (nth 1 item) 'file-query))
+      (dolist (register register-alist)
+        (if (or (markerp (cdr register))
+                (eq (nth 1 register) 'file-query))
             (if register-quicknav-buffer-only
-                (when (register-quicknav--is-current-buffer? item)
-                  (push item result))
-              (push item result))))
+                (when (register-quicknav--is-current-buffer? register)
+                  (push register result))
+              (push register result))))
       (sort result #'sort-registers))))
 
 (defun register-quicknav--jump-to-register (next)
   "Jump to next position register if NEXT is t, to previous otherwise."
-  (let* ((registers (register-quicknav--registers))
-         (index (cl-position (register-quicknav--last-register) registers))
+  (let* ((register-list (register-quicknav--registers))
+         (index (cl-position (register-quicknav--last-register) register-list))
          (stop-searching))
     (unless (eq index nil)
       (if next
@@ -157,34 +157,34 @@ Works on markers and file-queries."
         (cl-incf index)))
 
     ;; Try to find the position register closest to point.
-    (dolist (item registers)
-      (when (register-quicknav--is-current-buffer? item)
-        (let ((item-pos (register-quicknav--item-position item)))
+    (dolist (register register-list)
+      (when (register-quicknav--is-current-buffer? register)
+        (let ((register-pos (register-quicknav--position register)))
           (if next
-              (when (<= item-pos (point))
-                (setq index (cl-position item registers)))
-            (when (and (not stop-searching) (>= item-pos (point)))
-              (setq index (cl-position item registers)
+              (when (<= register-pos (point))
+                (setq index (cl-position register register-list)))
+            (when (and (not stop-searching) (>= register-pos (point)))
+              (setq index (cl-position register register-list)
                     stop-searching t))))))
 
     ;; If an index was found, set it to the next/previous register.  If not, set
     ;; it to the first/last.
     (if index
         (progn
-          (when (> index (- (length registers) 1))
+          (when (> index (- (length register-list) 1))
             (setq index nil))
           (if next
               (progn
-                (if (or (eq index nil) (eq index (- (length registers) 1)))
+                (if (or (eq index nil) (eq index (- (length register-list) 1)))
                     (setq index 0)
                   (cl-incf index)))
             (if (or (eq index nil) (eq index 0))
-                (setq index (- (length registers) 1))
+                (setq index (- (length register-list) 1))
               (cl-decf index)))
-          (register-to-point (car (nth index registers)))
-          (register-quicknav--last-register (nth index registers)))
-      (register-to-point (car (car registers)))
-      (register-quicknav--last-register (car registers)))))
+          (register-to-point (car (nth index register-list)))
+          (register-quicknav--last-register (nth index register-list)))
+      (register-to-point (car (car register-list)))
+      (register-quicknav--last-register (car register-list)))))
 
 ;;;###autoload
 (defun register-quicknav-next-register ()
