@@ -173,11 +173,10 @@ Works on markers and file-queries."
           (when (or (> index (- (length register-list) 1)) (< index 0))
             (setq index nil))
           (if next
-              (progn
-                (if (or (eq index nil) (eq index (length register-list)))
-                    (setq index 0)))
-            (if (or (eq index nil))
-                (setq index (- (length register-list) 1))))
+              (when (or (eq index nil) (eq index (length register-list)))
+                (setq index 0))
+            (when (eq index nil)
+              (setq index (- (length register-list) 1))))
           (register-to-point (car (nth index register-list)))
           (register-quicknav--last-register (nth index register-list)))
       (register-to-point (car (car register-list)))
