@@ -153,34 +153,32 @@ Works on markers and file-queries."
          (stop-searching))
     (unless (eq index nil)
       (if next
-          (cl-decf index)
-        (cl-incf index)))
+          (cl-incf index)
+        (cl-decf index)))
 
     ;; Try to find the position register closest to point.
     (dolist (register register-list)
       (when (register-quicknav--is-current-buffer? register)
         (let ((register-pos (register-quicknav--position register)))
           (if next
-              (when (<= register-pos (point))
-                (setq index (cl-position register register-list)))
-            (when (and (not stop-searching) (>= register-pos (point)))
-              (setq index (cl-position register register-list)
-                    stop-searching t))))))
+              (when (and (not stop-searching) (> register-pos (point)))
+                (setq index (cl-position register register-list)
+                      stop-searching t))
+            (when (< register-pos (point))
+              (setq index (cl-position register register-list)))))))
 
     ;; If an index was found, set it to the next/previous register.  If not, set
     ;; it to the first/last.
     (if index
         (progn
-          (when (> index (- (length register-list) 1))
+          (when (or (> index (- (length register-list) 1)) (< index 0))
             (setq index nil))
           (if next
               (progn
-                (if (or (eq index nil) (eq index (- (length register-list) 1)))
-                    (setq index 0)
-                  (cl-incf index)))
-            (if (or (eq index nil) (eq index 0))
-                (setq index (- (length register-list) 1))
-              (cl-decf index)))
+                (if (or (eq index nil) (eq index (length register-list)))
+                    (setq index 0)))
+            (if (or (eq index nil))
+                (setq index (- (length register-list) 1))))
           (register-to-point (car (nth index register-list)))
           (register-quicknav--last-register (nth index register-list)))
       (register-to-point (car (car register-list)))
