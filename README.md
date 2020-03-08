@@ -1,7 +1,7 @@
 # register-quicknav - Quickly jump to next/previous register
 
 *Author:* tastytea <tastytea@tastytea.de><br>
-*Version:* 0.2.0<br>
+*Version:* 0.3.0<br>
 *URL:* [https://schlomp.space/tastytea/register-quicknav](https://schlomp.space/tastytea/register-quicknav)<br>
 
 This package is built on top of `register.el` and allows you to quickly jump
