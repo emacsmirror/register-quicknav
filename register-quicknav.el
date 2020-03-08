@@ -102,7 +102,7 @@ the global value otherwise."
         register-quicknav--last-register-v
       (default-value 'register-quicknav--last-register-v))))
 
-(defun register-quicknav--register-file-name (register)
+(defun register-quicknav--file-name (register)
   "Return file-name of REGISTER.
 Works on markers and file-queries."
   (if (markerp (cdr register))
@@ -115,7 +115,7 @@ Works on markers and file-queries."
   (if (markerp (cdr register))
       (eq (current-buffer) (marker-buffer (cdr register)))
     (string= (buffer-file-name (current-buffer))
-             (register-quicknav--register-file-name register))))
+             (register-quicknav--file-name register))))
 
 (defun register-quicknav--position (register)
   "Return position of REGISTER.
@@ -132,8 +132,8 @@ current buffer."
              (lambda (a b)
                "Return t if position of A is < B.
 Works on markers and file-queries."
-               (and (string= (register-quicknav--register-file-name a)
-                             (register-quicknav--register-file-name b))
+               (and (string= (register-quicknav--file-name a)
+                             (register-quicknav--file-name b))
                     (< (register-quicknav--position a)
                        (register-quicknav--position b))))))
     (let ((result))
