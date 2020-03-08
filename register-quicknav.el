@@ -87,8 +87,20 @@
   :type 'boolean
   :group 'register-quicknav)
 
-(defvar register-quicknav--last-register nil
+(defvar-local register-quicknav--last-register-v nil
   "The last jumped-to position register.")
+
+(defun register-quicknav--last-register (&optional val)
+  "Return `register-quicknav--last-register-v' or set it if VAL is non-nil.
+Use the local value if `register-quicknav-buffer-only' is set and
+the global value otherwise."
+  (if val
+      (if register-quicknav-buffer-only
+          (setq register-quicknav--last-register-v val)
+        (setq-default register-quicknav--last-register-v val))
+    (if register-quicknav-buffer-only
+        register-quicknav--last-register-v
+      (default-value 'register-quicknav--last-register-v))))
 
 (defun register-quicknav--item-file-name (item)
   "Return file-name of ITEM.
@@ -137,7 +149,7 @@ Works on markers and file-queries."
 (defun register-quicknav--jump-to-register (next)
   "Jump to next position register if NEXT is t, to previous otherwise."
   (let* ((registers (register-quicknav--registers))
-         (index (cl-position register-quicknav--last-register registers))
+         (index (cl-position (register-quicknav--last-register) registers))
          (stop-searching))
     (unless (eq index nil)
       (if next
@@ -170,9 +182,9 @@ Works on markers and file-queries."
                 (setq index (- (length registers) 1))
               (cl-decf index)))
           (register-to-point (car (nth index registers)))
-          (setq register-quicknav--last-register (nth index registers)))
+          (register-quicknav--last-register (nth index registers)))
       (register-to-point (car (car registers)))
-      (setq register-quicknav--last-register (car registers)))))
+      (register-quicknav--last-register (car registers)))))
 
 ;;;###autoload
 (defun register-quicknav-next-register ()
@@ -190,7 +202,8 @@ Works on markers and file-queries."
 (defun register-quicknav-clear-current-register ()
   "Clear last jumped-to position register from `register-alist'."
   (interactive)
-  (setq register-alist (delq register-quicknav--last-register register-alist)))
+  (setq register-alist
+        (delq (register-quicknav--last-register) register-alist)))
 
 (provide 'register-quicknav)
 ;;; register-quicknav.el ends here
