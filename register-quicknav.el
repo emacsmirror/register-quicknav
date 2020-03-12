@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020  tastytea
 
 ;; Author: tastytea <tastytea@tastytea.de>
-;; Version: 0.3.1
+;; Version: 0.3.2
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience
 ;; URL: https://schlomp.space/tastytea/register-quicknav
@@ -64,7 +64,7 @@
 ;; Variables:
 ;;
 ;; * `register-quicknav-buffer-only': Cycle only through position registers in
-;;   current buffer.
+;;   current buffer.  Can be safely set as file- and/or dir-local variable.
 
 ;;; Code:
 
