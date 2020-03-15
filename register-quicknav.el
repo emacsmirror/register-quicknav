@@ -67,6 +67,22 @@
 ;; * `register-quicknav-unused-registers-end': End of the range that is used to
 ;;   search for unused registers.  Defaults to `?Z'.
 
+;; Differences to similar packages:
+;;
+;; [iregister](https://github.com/atykhonov/iregister.el):
+;;
+;; * Opens a minibuffer on each jump (thereby requiring an extra keystroke).
+;; * Doesn't work with file-query registers
+;; * Can't be restricted to the current buffer.
+;; * Doesn't look like it's still maintained.
+;;
+;; [register-channel](https://github.com/YangZhao11/register-channel):
+;;
+;; * Is limited to 5 position registers by default, needs an extra keybinding
+;;   for each additional register.
+;; * Can't be restricted to the current buffer.
+;; * Has no ability to jump to the next/previous register.
+
 ;;; Code:
 
 (require 'cl-lib)
