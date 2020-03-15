@@ -164,7 +164,7 @@ Works on markers and file-queries."
   (let* ((register-list (register-quicknav--registers))
          (index (cl-position (register-quicknav--last-register) register-list))
          (stop-searching))
-    (unless (eq index nil)
+    (when index
       (if next
           (cl-incf index)
         (cl-decf index)))
