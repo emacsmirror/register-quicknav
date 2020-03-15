@@ -13,6 +13,7 @@ across all files or individually for each buffer.
 
 * Cycle through all position registers in both directions.
 * Clear current register.
+* Store point in unused register (range configurable).
 
 ## Installation
 
@@ -20,32 +21,32 @@ across all files or individually for each buffer.
 from the namespace.  To conform with MELPA rules the separator has been
 changed to “-”.
 
-To use `register-quicknav.el`, put it in your load-path and add the following
-to your init.el:
+To use `register-quicknav.el`, get it from
+[MELPA](https://melpa.org/#/register-quicknav) or put it in your load-path
+and add the following to your init.el:
 
     (require 'register-quicknav)
     (global-set-key (kbd "<C-f5>") #'register-quicknav-prev-register)
     (global-set-key (kbd "<C-f6>") #'register-quicknav-next-register)
     (global-set-key (kbd "M-r")    #'register-quicknav-clear-current-register)
+    (global-set-key (kbd "C-M-r")  #'register-quicknav-point-to-unused-register)
 
 Or, with use-package:
 
     (use-package register-quicknav
       :bind (("C-<f5>" . register-quicknav-prev-register)
              ("C-<f6>" . register-quicknav-next-register)
-             ("M-r"    . register-quicknav-clear-current-register)))
-
-Instead of manually copying `register-quicknav.el` into your load-path, you
-can use [quelpa](https://github.com/quelpa/quelpa):
-
-    (quelpa '(register-quicknav
-              :fetcher git
-              :url "https://schlomp.space/tastytea/register-quicknav.git"))
+             ("M-r"    . register-quicknav-clear-current-register)
+             ("C-M-r"  . register-quicknav-point-to-unused-register))
 
 ## Variables
 
 * `register-quicknav-buffer-only`: Cycle only through position registers in
   current buffer.  Can be safely set as file- and/or dir-local variable.
+* `register-quicknav-unused-registers-begin`: Begin of range for
+  `register-quicknav-point-to-unused-register`.
+* `register-quicknav-unused-registers-end`: End of range for
+  `register-quicknav-point-to-unused-register`.
 
 
 ---

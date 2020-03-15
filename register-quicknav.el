@@ -39,8 +39,9 @@
 ;; from the namespace.  To conform with MELPA rules the separator has been
 ;; changed to “-”.
 ;;
-;; To use `register-quicknav.el', put it in your load-path and add the following
-;; to your init.el:
+;; To use `register-quicknav.el', get it from
+;; [MELPA](https://melpa.org/#/register-quicknav) or put it in your load-path
+;; and add the following to your init.el:
 ;;
 ;; (require 'register-quicknav)
 ;; (global-set-key (kbd "<C-f5>") #'register-quicknav-prev-register)
@@ -53,13 +54,6 @@
 ;;   :bind (("C-<f5>" . register-quicknav-prev-register)
 ;;          ("C-<f6>" . register-quicknav-next-register)
 ;;          ("M-r"    . register-quicknav-clear-current-register)))
-;;
-;; Instead of manually copying `register-quicknav.el' into your load-path, you
-;; can use [quelpa](https://github.com/quelpa/quelpa):
-;;
-;; (quelpa '(register-quicknav
-;;           :fetcher git
-;;           :url "https://schlomp.space/tastytea/register-quicknav.git"))
 
 ;; Variables:
 ;;
