@@ -90,6 +90,16 @@
   :group 'register-quicknav
   :safe #'booleanp)
 
+(defcustom register-quicknav-unused-registers-begin ?A
+  "Begin looking for unused register at this register."
+  :type 'character
+  :group 'register-quicknav)
+
+(defcustom register-quicknav-unused-registers-end ?Z
+  "End looking for unused register at this register."
+  :type 'character
+  :group 'register-quicknav)
+
 (defvar-local register-quicknav--last-register-v nil
   "The last jumped-to position register.")
 
@@ -200,6 +210,23 @@ Works on markers and file-queries."
   (interactive)
   (setq register-alist
         (delq (register-quicknav--last-register) register-alist)))
+
+;;;###autoload
+(defun register-quicknav-point-to-unused-register ()
+  "Store current location of point in next unused register.
+Searches the range between
+`register-quicknav-unused-registers-begin' and
+`register-quicknav-unused-registers-end'."
+  (interactive)
+  (let* ((begin register-quicknav-unused-registers-begin)
+         (end register-quicknav-unused-registers-end)
+         (char begin))
+    (while (and (get-register char)
+                (not (> char end)))
+      (cl-incf char))
+    (if (<= char end)
+        (point-to-register char)
+      (message "No unused register in the range %c - %c found." begin end))))
 
 (provide 'register-quicknav)
 ;;; register-quicknav.el ends here
