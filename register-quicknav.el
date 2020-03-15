@@ -47,16 +47,16 @@
 ;; (require 'register-quicknav)
 ;; (global-set-key (kbd "<C-f5>") #'register-quicknav-prev-register)
 ;; (global-set-key (kbd "<C-f6>") #'register-quicknav-next-register)
-;; (global-set-key (kbd "M-r")    #'register-quicknav-clear-current-register)
-;; (global-set-key (kbd "C-M-r")  #'register-quicknav-point-to-unused-register)
+;; (global-set-key (kbd "<C-f7>") #'register-quicknav-point-to-unused-register)
+;; (global-set-key (kbd "<C-S-<f7>") #'register-quicknav-clear-current-register)
 ;;
 ;; Or, with use-package:
 ;;
 ;; (use-package register-quicknav
-;;   :bind (("C-<f5>" . register-quicknav-prev-register)
-;;          ("C-<f6>" . register-quicknav-next-register)
-;;          ("M-r"    . register-quicknav-clear-current-register)
-;;          ("C-M-r"  . register-quicknav-point-to-unused-register)))
+;;   :bind (("C-<f5>"   . register-quicknav-prev-register)
+;;          ("C-<f6>"   . register-quicknav-next-register)
+;;          ("C-<f7>"   . register-quicknav-point-to-unused-register)
+;;          ("C-S-<f7>" . register-quicknav-clear-current-register)))
 
 ;; Variables:
 ;;
