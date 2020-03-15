@@ -117,7 +117,7 @@
   :type 'character
   :group 'register-quicknav)
 
-(defvar-local register-quicknav--last-register-v nil
+(defvar register-quicknav--last-register-v nil
   "The last jumped-to position register.")
 
 (defun register-quicknav--last-register (&optional val)
