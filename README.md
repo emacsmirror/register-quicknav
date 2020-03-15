@@ -37,16 +37,16 @@ Or, with use-package:
       :bind (("C-<f5>" . register-quicknav-prev-register)
              ("C-<f6>" . register-quicknav-next-register)
              ("M-r"    . register-quicknav-clear-current-register)
-             ("C-M-r"  . register-quicknav-point-to-unused-register))
+             ("C-M-r"  . register-quicknav-point-to-unused-register)))
 
 ## Variables
 
 * `register-quicknav-buffer-only`: Cycle only through position registers in
   current buffer.  Can be safely set as file- and/or dir-local variable.
-* `register-quicknav-unused-registers-begin`: Begin of range for
-  `register-quicknav-point-to-unused-register`.
-* `register-quicknav-unused-registers-end`: End of range for
-  `register-quicknav-point-to-unused-register`.
+* `register-quicknav-unused-registers-begin`: Beginning of the range that is
+  used to search for unused registers.  Defaults to `?A`.
+* `register-quicknav-unused-registers-end`: End of the range that is used to
+  search for unused registers.  Defaults to `?Z`.
 
 
 ---

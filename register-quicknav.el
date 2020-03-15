@@ -32,6 +32,7 @@
 ;;
 ;; * Cycle through all position registers in both directions.
 ;; * Clear current register.
+;; * Store point in unused register (range configurable).
 
 ;; Installation:
 ;;
@@ -47,18 +48,24 @@
 ;; (global-set-key (kbd "<C-f5>") #'register-quicknav-prev-register)
 ;; (global-set-key (kbd "<C-f6>") #'register-quicknav-next-register)
 ;; (global-set-key (kbd "M-r")    #'register-quicknav-clear-current-register)
+;; (global-set-key (kbd "C-M-r")  #'register-quicknav-point-to-unused-register)
 ;;
 ;; Or, with use-package:
 ;;
 ;; (use-package register-quicknav
 ;;   :bind (("C-<f5>" . register-quicknav-prev-register)
 ;;          ("C-<f6>" . register-quicknav-next-register)
-;;          ("M-r"    . register-quicknav-clear-current-register)))
+;;          ("M-r"    . register-quicknav-clear-current-register)
+;;          ("C-M-r"  . register-quicknav-point-to-unused-register)))
 
 ;; Variables:
 ;;
 ;; * `register-quicknav-buffer-only': Cycle only through position registers in
 ;;   current buffer.  Can be safely set as file- and/or dir-local variable.
+;; * `register-quicknav-unused-registers-begin': Beginning of the range that is
+;;   used to search for unused registers.  Defaults to `?A'.
+;; * `register-quicknav-unused-registers-end': End of the range that is used to
+;;   search for unused registers.  Defaults to `?Z'.
 
 ;;; Code:
 
