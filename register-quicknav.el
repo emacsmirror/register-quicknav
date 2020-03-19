@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020  tastytea
 
 ;; Author: tastytea <tastytea@tastytea.de>
-;; Version: 0.4.0
+;; Version: 0.4.1
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience
 ;; URL: https://schlomp.space/tastytea/register-quicknav
@@ -33,6 +33,7 @@
 ;; * Cycle through all position registers in both directions.
 ;; * Clear current register.
 ;; * Store point in unused register (range configurable).
+;; * Clear all registers in the unused registers range.
 
 ;; Installation:
 ;;
@@ -246,6 +247,16 @@ Searches the range between
           (point-to-register char)
           (message "Position stored in register %c." char))
       (message "No unused register in the range %c - %c found." begin end))))
+
+;;;###autoload
+(defun register-quicknav-clear-unused-registers-range ()
+  "Clear all registers in the range used by `register-quicknav-point-to-unused-register'."
+  (interactive)
+  (dolist (register register-alist)
+    (when (and (>= (car register) register-quicknav-unused-registers-begin)
+               (<= (car register) register-quicknav-unused-registers-end))
+      (setq register-alist
+            (delq register register-alist)))))
 
 (provide 'register-quicknav)
 ;;; register-quicknav.el ends here

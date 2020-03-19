@@ -1,7 +1,7 @@
 # register-quicknav - Quickly jump to next/previous register
 
 *Author:* tastytea <tastytea@tastytea.de><br>
-*Version:* 0.4.0<br>
+*Version:* 0.4.1<br>
 *URL:* [https://schlomp.space/tastytea/register-quicknav](https://schlomp.space/tastytea/register-quicknav)<br>
 
 This package is built on top of `register.el` and allows you to quickly jump
@@ -14,6 +14,7 @@ across all files or individually for each buffer.
 * Cycle through all position registers in both directions.
 * Clear current register.
 * Store point in unused register (range configurable).
+* Clear all registers in the unused registers range.
 
 ## Installation
 
