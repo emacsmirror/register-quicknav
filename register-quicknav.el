@@ -242,7 +242,9 @@ Searches the range between
                 (not (> char end)))
       (cl-incf char))
     (if (<= char end)
-        (point-to-register char)
+        (progn
+          (point-to-register char)
+          (message "Position stored in register %c." char))
       (message "No unused register in the range %c - %c found." begin end))))
 
 (provide 'register-quicknav)
