@@ -224,7 +224,8 @@ Works on markers and file-queries."
 
 ;;;###autoload
 (defun register-quicknav-clear-current-register ()
-  "Clear last jumped-to position register from `register-alist'."
+  "Clear last jumped-to position register from `register-alist'.
+Deletes the value of `register-quicknav--last-register' from `register-alist'."
   (interactive)
   (setq register-alist
         (delq (register-quicknav--last-register) register-alist))
