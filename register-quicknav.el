@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020  tastytea
 
 ;; Author: tastytea <tastytea@tastytea.de>
-;; Version: 0.4.1
+;; Version: 0.4.2
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience
 ;; URL: https://schlomp.space/tastytea/register-quicknav
@@ -170,7 +170,7 @@ Works on markers and file-queries."
     (let ((result))
       (dolist (register register-alist)
         (if (or (markerp (cdr register))
-                (eq (nth 1 register) 'file-query))
+                (ignore-errors (eq (nth 1 register) 'file-query)))
             (if register-quicknav-buffer-only
                 (when (register-quicknav--is-current-buffer? register)
                   (push register result))
