@@ -245,6 +245,7 @@ Searches the range between
     (if (<= char end)
         (progn
           (point-to-register char)
+          (register-quicknav--last-register (assoc char register-alist))
           (message "Position stored in register %c." char))
       (message "No unused register in the range %c - %c found." begin end))))
 
