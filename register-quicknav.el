@@ -227,7 +227,8 @@ Works on markers and file-queries."
   "Clear last jumped-to position register from `register-alist'."
   (interactive)
   (setq register-alist
-        (delq (register-quicknav--last-register) register-alist)))
+        (delq (register-quicknav--last-register) register-alist))
+  (message "Cleared register %c." (car (register-quicknav--last-register))))
 
 ;;;###autoload
 (defun register-quicknav-point-to-unused-register ()
@@ -253,11 +254,14 @@ Searches the range between
 (defun register-quicknav-clear-unused-registers-range ()
   "Clear all registers in the range used by `register-quicknav-point-to-unused-register'."
   (interactive)
-  (dolist (register register-alist)
-    (when (and (>= (car register) register-quicknav-unused-registers-begin)
-               (<= (car register) register-quicknav-unused-registers-end))
-      (setq register-alist
-            (delq register register-alist)))))
+  (let ((begin register-quicknav-unused-registers-begin)
+        (end register-quicknav-unused-registers-end))
+    (dolist (register register-alist)
+      (when (and (>= (car register) begin)
+                 (<= (car register) end))
+        (setq register-alist
+              (delq register register-alist))))
+    (message "Cleared unused registers in the range %c - %c." begin end)))
 
 (provide 'register-quicknav)
 ;;; register-quicknav.el ends here
