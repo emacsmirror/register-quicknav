@@ -1,0 +1,72 @@
+kind: pipeline
+name: Lint package
+
+volumes:
+- name: debian-package-cache
+  host:
+    path: /var/cache/debian-package-cache
+
+steps:
+- name: Emacs 26.3
+  image: flycheck/emacs-cask:26.3
+  pull: always
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+    LANG: en_US.UTF-8
+  commands:
+  - rm /etc/apt/apt.conf.d/docker-clean
+  - alias apt-get='rm -f /var/cache/apt/archives/lock && apt-get'
+  - apt-get update -q
+  - apt-get install -qq language-pack-en git aspell-en
+  - ./makem.sh --verbose --sandbox --install-deps --install-linters lint
+  volumes:
+  - name: debian-package-cache
+    path: /var/cache/apt/archives
+
+- name: Emacs master-branch
+  image: flycheck/emacs-cask:master
+  pull: always
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+    LANG: en_US.UTF-8
+  commands:
+  - rm /etc/apt/apt.conf.d/docker-clean
+  - alias apt-get='rm -f /var/cache/apt/archives/lock && apt-get'
+  - apt-get update -q
+  - apt-get install -qq language-pack-en git aspell-en
+  - emacs --version
+  - ./makem.sh --verbose --sandbox --install-deps --install-linters lint
+  volumes:
+  - name: debian-package-cache
+    path: /var/cache/apt/archives
+
+- name: Emacs 25.3
+  image: flycheck/emacs-cask:25.3
+  pull: always
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+    LANG: C
+  commands:
+  - rm /etc/apt/apt.conf.d/docker-clean
+  - alias apt-get='rm -f /var/cache/apt/archives/lock && apt-get'
+  - apt-get update -q
+  - apt-get install -qq git
+  # Some package or its dependency requires Emacs 26.1,
+  # so we just check if it compiles.
+  - ./makem.sh --verbose --sandbox compile
+  volumes:
+  - name: debian-package-cache
+    path: /var/cache/apt/archives
+
+- name: notify
+  image: drillster/drone-email
+  pull: always
+  settings:
+    host: cryptoparty-celle.de
+    from: drone@tzend.de
+    username:
+      from_secret: email_username
+    password:
+      from_secret: email_password
+  when:
+    status: [ changed, failure ]
