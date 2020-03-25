@@ -6,6 +6,11 @@ volumes:
   host:
     path: /var/cache/debian-package-cache
 
+trigger:
+  event:
+    exclude:
+    - tag
+
 steps:
 - name: Emacs 26.3
   image: flycheck/emacs-cask:26.3
