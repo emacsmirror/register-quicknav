@@ -1,2 +1,3 @@
 /flycheck*.el*
 *~
+*.elc

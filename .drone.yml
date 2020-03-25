@@ -1,0 +1,60 @@
+# -*- fill-column: 200; -*-
+kind: pipeline
+name: Lint package
+
+volumes:
+- name: debian-package-cache
+  host:
+    path: /var/cache/debian-package-cache
+
+steps:
+- name: Emacs 26
+  image: ubuntu:bionic
+  pull: always
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+    LANG: en_US.UTF-8
+  commands:
+  - rm /etc/apt/apt.conf.d/docker-clean
+  - alias apt-get='rm -f /var/cache/apt/archives/lock && apt-get'
+  - apt-get update -q
+  - apt-get install -qq software-properties-common language-pack-en
+  - add-apt-repository -y ppa:kelleyk/emacs
+  - apt-get update -q
+  - apt-get install -qq emacs26-nox aspell-en git
+  - ./makem.sh --sandbox --install-deps --install-linters lint compile
+  volumes:
+  - name: debian-package-cache
+    path: /var/cache/apt/archives
+
+- name: Emacs snapshot
+  image: ubuntu:bionic
+  pull: always
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+    LANG: en_US.UTF-8
+  commands:
+  - rm /etc/apt/apt.conf.d/docker-clean
+  - alias apt-get='rm -f /var/cache/apt/archives/lock && apt-get'
+  - apt-get update -q
+  - apt-get install -qq software-properties-common language-pack-en
+  - add-apt-repository -y ppa:ubuntu-elisp/ppa
+  - apt-get update -q
+  - apt-get install -qq  emacs-snapshot-nox aspell-en git
+  - ./makem.sh --sandbox --install-deps --install-linters lint compile
+  volumes:
+  - name: debian-package-cache
+    path: /var/cache/apt/archives
+
+- name: notify
+  image: drillster/drone-email
+  pull: always
+  settings:
+    host: cryptoparty-celle.de
+    from: drone@tzend.de
+    username:
+      from_secret: email_username
+    password:
+      from_secret: email_password
+  when:
+    status: [ changed, failure ]
