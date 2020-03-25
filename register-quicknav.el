@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020  tastytea
 
 ;; Author: tastytea <tastytea@tastytea.de>
-;; Version: 0.4.2
+;; Version: 0.4.3
 ;; Package-Requires: ((emacs "25.3"))
 ;; Keywords: convenience
 ;; URL: https://schlomp.space/tastytea/register-quicknav
