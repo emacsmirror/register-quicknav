@@ -1,4 +1,3 @@
-# -*- fill-column: 200; -*-
 kind: pipeline
 name: Lint package
 
@@ -8,8 +7,8 @@ volumes:
     path: /var/cache/debian-package-cache
 
 steps:
-- name: Emacs 26
-  image: ubuntu:bionic
+- name: Emacs 26.3
+  image: flycheck/emacs-cask:26.3
   pull: always
   environment:
     DEBIAN_FRONTEND: noninteractive
@@ -18,17 +17,14 @@ steps:
   - rm /etc/apt/apt.conf.d/docker-clean
   - alias apt-get='rm -f /var/cache/apt/archives/lock && apt-get'
   - apt-get update -q
-  - apt-get install -qq software-properties-common language-pack-en
-  - add-apt-repository -y ppa:kelleyk/emacs
-  - apt-get update -q
-  - apt-get install -qq emacs26-nox aspell-en git
-  - ./makem.sh --sandbox --install-deps --install-linters lint compile
+  - apt-get install -qq language-pack-en git aspell-en
+  - ./makem.sh --verbose --sandbox --install-deps --install-linters lint
   volumes:
   - name: debian-package-cache
     path: /var/cache/apt/archives
 
-- name: Emacs snapshot
-  image: ubuntu:bionic
+- name: Emacs master-branch
+  image: flycheck/emacs-cask:master
   pull: always
   environment:
     DEBIAN_FRONTEND: noninteractive
@@ -37,11 +33,27 @@ steps:
   - rm /etc/apt/apt.conf.d/docker-clean
   - alias apt-get='rm -f /var/cache/apt/archives/lock && apt-get'
   - apt-get update -q
-  - apt-get install -qq software-properties-common language-pack-en
-  - add-apt-repository -y ppa:ubuntu-elisp/ppa
+  - apt-get install -qq language-pack-en git aspell-en
+  - emacs --version
+  - ./makem.sh --verbose --sandbox --install-deps --install-linters lint
+  volumes:
+  - name: debian-package-cache
+    path: /var/cache/apt/archives
+
+- name: Emacs 25.3
+  image: flycheck/emacs-cask:25.3
+  pull: always
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+    LANG: C
+  commands:
+  - rm /etc/apt/apt.conf.d/docker-clean
+  - alias apt-get='rm -f /var/cache/apt/archives/lock && apt-get'
   - apt-get update -q
-  - apt-get install -qq  emacs-snapshot-nox aspell-en git
-  - ./makem.sh --sandbox --install-deps --install-linters lint compile
+  - apt-get install -qq git
+  # Some package or its dependency requires Emacs 26.1,
+  # so we just check if it compiles.
+  - ./makem.sh --verbose --sandbox compile
   volumes:
   - name: debian-package-cache
     path: /var/cache/apt/archives
