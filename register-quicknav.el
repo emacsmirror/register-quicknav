@@ -37,10 +37,6 @@
 
 ;; Installation:
 ;;
-;; **Note:** The function and variable names were previously separated by “/”
-;; from the namespace.  To conform with MELPA rules the separator has been
-;; changed to “-”.
-;;
 ;; To use `register-quicknav.el', get it from
 ;; [MELPA](https://melpa.org/#/register-quicknav) or put it in your load-path
 ;; and add the following to your init.el:
@@ -87,15 +83,6 @@
 ;;; Code:
 
 (require 'cl-lib)
-
-(define-obsolete-variable-alias 'register-quicknav/buffer-only
-  'register-quicknav-buffer-only "0.1.1")
-(define-obsolete-function-alias 'register-quicknav/next-register
-  #'register-quicknav-next-register "0.1.1")
-(define-obsolete-function-alias 'register-quicknav/prev-register
-  #'register-quicknav-prev-register "0.1.1")
-(define-obsolete-function-alias 'register-quicknav/clear-current-register
-  #'register-quicknav-clear-current-register "0.1.1")
 
 (defgroup register-quicknav nil
   "Variables for register-quicknav."
